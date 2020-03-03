@@ -10,25 +10,10 @@ m = GEKKO()
 eq = m.Param(value=40)
 
 # initialize variables
-x1, x2, x3, x4 = [m.Var() for i in range(4)]
-
-# initialize values
-x1.value = 1
-x2.value = 5
-x3.value = 5
-x4.value = 1
-
-# lower bounds
-x1.lower = 1
-x2.lower = 1
-x3.lower = 1
-x4.lower = 1
-
-# upper bounds
-x1.upper = 5
-x2.upper = 5
-x3.upper = 5
-x4.upper = 5
+x1 = m.Var(value=1,lb=1,ub=5)
+x2 = m.Var(value=5,lb=1,ub=5)
+x3 = m.Var(value=5,lb=1,ub=5)
+x4 = m.Var(value=1,lb=1,ub=5)
 
 # equations
 m.Equation(x1 * x2 * x3 * x4 >= 25)
