@@ -1,1 +1,1 @@
-import gekko_opt
+from GEKKO import nonlinear_regression

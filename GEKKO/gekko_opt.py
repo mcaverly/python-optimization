@@ -24,6 +24,7 @@ m.Obj(x1 * x4 * (x1 + x2 + x3) + x3)
 
 # set global options
 m.options.IMODE = 3  # steady state optimization
+m.options.SOLVER = 3 # IPOPT solver
 
 # solve simulation
 m.solve()
