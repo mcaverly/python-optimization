@@ -1,7 +1,5 @@
 from gekko import GEKKO
 import numpy as np
-import matplotlib as mpl
-mpl.use('Agg')
 import matplotlib.pyplot as plt
 
 # measurements
@@ -35,6 +33,13 @@ m.solve()  # pass parameter "disp=False" to hide solver outlet
 # print parameters
 print('Optimized, a = ' + str(a.value[0]) + ' b = ' + str(b.value[0]))
 
+# plot experimental data
 plt.plot(xm, ym, 'bo')
-plt.plot(xm, y.value, 'r-')
+
+# plot regression curve
+xnew = np.linspace(xm.min(), xm.max(), 300)
+ynew = a.value[0] * np.exp(b.value[0] * xnew)
+plt.plot(xnew, ynew, 'r-')
+
+# save output (required for Repl.it)
 plt.savefig('GEKKO/nonlinear_regression_plot.png')
