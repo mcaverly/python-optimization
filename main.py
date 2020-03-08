@@ -1,1 +1,1 @@
-from GEKKO import nonlinear_regression
+from GEKKO import mixed_int_nonlinear

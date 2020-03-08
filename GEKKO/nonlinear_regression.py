@@ -1,6 +1,12 @@
 from gekko import GEKKO
 import numpy as np
 import matplotlib.pyplot as plt
+'''
+Nonlinear Regression 
+
+Example #6 from APMonitor.com
+http://apmonitor.com/wiki/index.php/Main/GekkoPythonOptimization
+'''
 
 # measurements
 xm = np.array([0, 1, 2, 3, 4, 5])

@@ -1,5 +1,11 @@
 from gekko import GEKKO
 import numpy as np
+'''
+Nonlinear Programming Optimization 
+
+Example #9 from APMonitor.com
+http://apmonitor.com/wiki/index.php/Main/GekkoPythonOptimization
+'''
 
 # initialize model
 m = GEKKO()
