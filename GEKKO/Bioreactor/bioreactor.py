@@ -16,28 +16,40 @@ substrate_data = data_file[:, 2]
 
 # GEKKO model init
 m = GEKKO(remote=False)
-m.time = time #np.linspace(0,20,nt)
+m.time = time  #np.linspace(0,20,nt)
 
 # parameters
-rsmax = m.FV(value=0.05, lb=0); rsmax.STATUS = 1 
-ks = m.FV(value=0.2, lb=0); ks.STATUS = 1  
-x = m.FV(value=cells_data)
+rsmax = m.FV(value=0.05, lb=0); rsmax.STATUS = 1
+ks = m.FV(value=0.2, lb=0); ks.STATUS = 1
+yxs = m.FV(value=5.6, lb=0); ks.STATUS = 1
+mum = m.FV(value=0.118, lb=0); ks.STATUS = 1
 
 # variables
+rs = m.CV(); rs.FSTATUS = 1
+mu = m.CV(); rs.FSTATUS = 1
 s = m.CV(value=substrate_data); s.FSTATUS = 1
+x = m.CV(value=cells_data); s.FSTATUS = 1
 
-# regression equation
-m.Equation(s.dt() == -rsmax * (s * x / (ks + s)))
+# intermediate equations
+m.Equation(rs == rsmax * (s / (ks + s)))
+m.Equation(mu == yxs * rs - mum)
+
+# dynamic equations
+m.Equation(s.dt() == -rs * x)
+m.Equation(x.dt() == mu * x)
 
 # regression mode
-m.options.IMODE = 5   # dynamic estimation
-m.options.NODES = 5   # collocation nodes
-m.options.EV_TYPE = 2 # squared error
-m.solve(disp=True)    # display solver output
+m.options.IMODE = 5  # dynamic estimation
+m.options.NODES = 5  # collocation nodes
+m.options.EV_TYPE = 2  # squared error
+m.solve(disp=True)  # display solver output
 
 # print parameters
-print('Optimized, rsmax = ' + str(rsmax.value[0]) + ' ks = ' +
-      str(ks.value[0]))
+print('Optimized, rsmax = ' + str(rsmax.value[0]) 
+  + ' ks = ' + str(ks.value[0])
+  + ' yxs = ' + str(yxs.value[0])
+  + ' mum = ' + str(mum.value[0])
+)
 
 #
 # Plot curve(s)
@@ -50,6 +62,9 @@ ax1.set_xlabel('Time (days)')
 ax1.set_ylabel('Biomass (g/L)', color=color)
 ax1.plot(time, cells_data, color=color, marker=marker, linestyle='None')
 ax1.tick_params(axis='y', labelcolor=color)
+
+# cells model curve 
+ax1.plot(time, x, color=color, marker='None')
 
 ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
 
